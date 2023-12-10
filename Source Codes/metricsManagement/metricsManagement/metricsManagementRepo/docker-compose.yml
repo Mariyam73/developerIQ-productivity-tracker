@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  metrics-app:
+    build: ./metrics_management
+    image: metrics-image
+    container_name: metrics-image
+    network_mode: host

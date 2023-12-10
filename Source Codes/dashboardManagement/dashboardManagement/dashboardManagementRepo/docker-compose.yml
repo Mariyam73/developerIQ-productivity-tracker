@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  dashboard-app:
+    build: ./dashboard_creation
+    image: dashboard-image
+    container_name: dashboard-image
+    network_mode: host

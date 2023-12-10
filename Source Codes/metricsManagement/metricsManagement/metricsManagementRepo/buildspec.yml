@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Building and pushing Docker images...
+      - docker-compose up -d
+      - docker ps
+
+  post_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 350143100037.dkr.ecr.ap-southeast-1.amazonaws.com
+      - echo Pushing metrics-image Docker image to ECR...
+      - docker tag metrics-image:latest 350143100037.dkr.ecr.ap-southeast-1.amazonaws.com/developer-iq-repository:latest
+      - docker push 350143100037.dkr.ecr.ap-southeast-1.amazonaws.com/developer-iq-repository:latest
+
+artifacts:
+  files: 
+    - '**/*'
+
+post_build:
+  commands:
+    - echo Deploying to Kubernetes...
+    - kubectl apply -f deployment.yaml

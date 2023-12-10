@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  developer-image:
+    build: ./developer_management
+    image: developer-app-image
+    container_name: developer-app-image
+    network_mode: host
