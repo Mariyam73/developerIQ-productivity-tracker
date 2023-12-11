@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: developer-iq
+  name: metrics-deploy-green
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metrics-app-green
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: metrics-app-green
+    spec:
+      containers:
+      - image: 350143100037.dkr.ecr.ap-southeast-1.amazonaws.com/developer-iq-green-repository:latest
+        imagePullPolicy: Always
+        name: metrics-app-green
+        ports:
+        - containerPort: 3041
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: developer-iq
+  name: metrics-service-green
+spec:
+  ports:
+    - port: 3041
+      targetPort: 3041
+      protocol: TCP
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: metrics-app-green
+status:
+  loadBalancer: {}
