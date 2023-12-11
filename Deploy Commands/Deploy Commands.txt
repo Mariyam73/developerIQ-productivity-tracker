@@ -30,3 +30,6 @@ kubectl get deployments
 
 # -- describe deployments
 kubectl describe deployments
+
+# -- running updated service file
+kubectl apply -f C:/KubernatesCluster/<path and name of your service file>
